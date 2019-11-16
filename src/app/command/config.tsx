@@ -21,7 +21,8 @@ export const config: Config[] = [{
   config: props => <Textfield {...props} />,
   icon: <FeedbackIcon />,
   onChange: (ev) => store.dispatch(setName(ev.target.value)),
-  code: name => `commander.createCommand(${name})\n`
+  error: ({ getValue }) => (/\s/).test(getValue()),
+  code: ({ getValue }) => `commander.createCommand(${getValue()})\n`
 }, {
   type: EntryType.TEXT,
   label: "Help Text",

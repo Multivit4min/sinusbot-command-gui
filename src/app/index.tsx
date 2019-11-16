@@ -43,7 +43,7 @@ class CommandBuilder extends Component<AppProps & Styles> {
 
     return (
       <Grid container className={classes.content}>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Typography>Simple Sinusbot Command Builder!</Typography>
 
           <div className={classes.margin}>
@@ -56,6 +56,7 @@ class CommandBuilder extends Component<AppProps & Styles> {
                     value: config.getValue(),
                     icon: config.icon,
                     label: config.label,
+                    error: config.error ? config.error(config) : false,
                     onChange: event => config.onChange(event)
                   })
                   default: return <Typography>Unknown type "{config.type}"</Typography>
@@ -64,7 +65,7 @@ class CommandBuilder extends Component<AppProps & Styles> {
           </div>
 
         </Grid>
-        <Grid item xs={6} justify="center">
+        <Grid item xs={4} justify="center">
           <Typography variant="h5">CODE:</Typography>
           <pre className="code">
               {config
@@ -78,6 +79,8 @@ class CommandBuilder extends Component<AppProps & Styles> {
                 .join("")
               }
           </pre>
+        </Grid>
+        <Grid item xs={4} justify="center">
           <Typography variant="h5">HELP Command:</Typography>
           <pre className="code">
   {`

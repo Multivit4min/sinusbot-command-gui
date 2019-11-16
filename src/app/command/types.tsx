@@ -18,7 +18,7 @@ export interface TextEntry extends BaseEntry<string> {
   config: (props: TextfieldProps) => any
   onChange: (event: React.ChangeEvent<any>) => void
   multiline?: boolean
-  error?: boolean
+  error?: (config: TextEntry) => boolean
   displayCode?: (config: TextEntry) => boolean
   getValue: () => string
   code?: (config: TextEntry) => string
