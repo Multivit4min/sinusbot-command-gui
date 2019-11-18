@@ -5,8 +5,7 @@ import { createStyles, withStyles, Theme } from "@material-ui/core"
 import { AppState } from "./redux"
 import { connect } from "react-redux"
 
-import { EntryType } from "./command/types"
-import { config } from "./command/config"
+import { fields } from "./fields"
 import { CommandState } from "./redux/command/types"
 
 const styles = ({ spacing }: Theme) => createStyles({
@@ -47,35 +46,21 @@ class CommandBuilder extends Component<AppProps & Styles> {
           <Typography>Simple Sinusbot Command Builder!</Typography>
 
           <div className={classes.margin}>
-            {config
-              .filter(({ hasConfig }) => hasConfig)
-              .map((config) => {
-                switch (config.type) {
-                  case EntryType.TEXT: return config.config({
-                    multiline: config.multiline,
-                    value: config.getValue(),
-                    icon: config.icon,
-                    label: config.label,
-                    error: config.error ? config.error(config) : false,
-                    onChange: event => config.onChange(event)
-                  })
-                  default: return <Typography>Unknown type "{config.type}"</Typography>
-                }
-              })}
+            {fields
+              .filter(field => field.hasConfig)
+              //@ts-ignore
+              .map(config => config.renderConfigField())
+            }
           </div>
 
         </Grid>
         <Grid item xs={4} justify="center">
           <Typography variant="h5">CODE:</Typography>
           <pre className="code">
-              {config
-                .filter(({ hasCode }) => hasCode)
-                .filter(config => (
-                  config.type !== EntryType.TEXT ||
-                  typeof config.displayCode !== "function" ||
-                  config.displayCode(config)
-                ))
-                .map((config: any) => config.code!(config))
+              {fields
+                .filter(field => field.hasCode)
+                .filter(field => field.displayCode())
+                .map(field => field.renderCode())
                 .join("")
               }
           </pre>
