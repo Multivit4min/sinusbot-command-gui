@@ -2,7 +2,7 @@ import React from "react"
 import Grid from "@material-ui/core/Grid"
 import TextField from "@material-ui/core/TextField"
 
-import { CommandComponent, ConfigInterface, CodeInterface } from "./Abstract"
+import { ConfigInterface, CodeInterface } from "./Abstract"
 
 export interface TextComponentConfig {
   getValue: (component: TextComponent) => string
@@ -15,7 +15,7 @@ export interface TextComponentConfig {
   multiline?: boolean
 }
 
-export class TextComponent extends CommandComponent<{}> implements ConfigInterface, CodeInterface {
+export class TextComponent implements ConfigInterface, CodeInterface {
 
   readonly hasConfig = true
   readonly hasCode = true
@@ -28,8 +28,7 @@ export class TextComponent extends CommandComponent<{}> implements ConfigInterfa
   private label: string
   private multiline: boolean
 
-  constructor(config: TextComponentConfig, props: Readonly<{}> = {}) {
-    super(props)
+  constructor(config: TextComponentConfig) {
     this.valueCallback = config.getValue
     this.changeCallback = config.onChange
     this.isValidCallback = config.isValid || (() => true)
@@ -48,14 +47,6 @@ export class TextComponent extends CommandComponent<{}> implements ConfigInterfa
     return this.valueCallback(this)
   }
 
-  getLabel() {
-    return this.label
-  }
-
-  getIcon() {
-    return this.icon
-  }
-
   isValid() {
     return this.isValidCallback(this)
   }
@@ -68,9 +59,9 @@ export class TextComponent extends CommandComponent<{}> implements ConfigInterfa
     return this.renderCodeCallback(this)
   }
 
-  renderConfigField() {
+  renderConfigField(key?: number) {
     return (
-      <Grid container spacing={1} alignItems="flex-end">
+      <Grid key={key} container spacing={1} alignItems="flex-end">
         <Grid item>
           {this.icon}
         </Grid>

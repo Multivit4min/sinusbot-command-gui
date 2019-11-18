@@ -1,17 +1,23 @@
 import React from "react"
-import { TextComponent } from "./command/TextComponent"
-import { CodeComponent } from "./command/CodeComponent"
-import { CheckBoxComponent } from "./command/CheckBoxComponent"
+import { TextComponent } from "./components/TextComponent"
+import { CodeComponent } from "./components/CodeComponent"
+import { CheckBoxComponent } from "./components/CheckBoxComponent"
+import { DynamicListComponent } from "./components/DynamicListComponent/"
 
 import FeedbackIcon from "@material-ui/icons/Feedback"
 import HelpIcon from "@material-ui/icons/Help"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import LockIcon from "@material-ui/icons/Lock"
+import ReorderIcon from "@material-ui/icons/Reorder"
 
 import { setName, setHelp, setManual, checkPermission } from "./redux/command/actions"
 import { store } from "./redux"
 
-type CommandComponent = TextComponent | CodeComponent | CheckBoxComponent
+type CommandComponent =
+  TextComponent |
+  CodeComponent |
+  CheckBoxComponent |
+  DynamicListComponent
 
 
 export const fields: CommandComponent[] = [
@@ -50,6 +56,15 @@ export const fields: CommandComponent[] = [
     //retrieves as first argument the requesting sinusbot client
     //return either true or false in order to allow the client to use this command
   })\n`
+  }),
+  new DynamicListComponent({
+    icon: <ReorderIcon />,
+    label: "Add Argument",
+    listItems: {
+      "StringArgument": null,
+      "NumberArgument": null,
+      "ClientArgument": null
+    }
   }),
   new CodeComponent({
     renderCode: () => `  .exec((client, args, reply) => {

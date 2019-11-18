@@ -1,19 +1,18 @@
-import { CommandComponent, CodeInterface } from "./Abstract"
+import { CodeInterface } from "./Abstract"
 
 export interface CodeComponentConfig {
   displayCode?: (component: CodeComponent) => boolean
   renderCode: (component: CodeComponent) => string
 }
 
-export class CodeComponent extends CommandComponent<{}> implements CodeInterface {
+export class CodeComponent implements CodeInterface {
 
   readonly hasConfig = false
   readonly hasCode = true
   private displayCodeCallback: (component: CodeComponent) => boolean
   private renderCodeCallback: (component: CodeComponent) => string
 
-  constructor(config: CodeComponentConfig, props: Readonly<{}> = {}) {
-    super(props)
+  constructor(config: CodeComponentConfig) {
     this.displayCodeCallback = config.displayCode || (() => true)
     this.renderCodeCallback = config.renderCode
   }

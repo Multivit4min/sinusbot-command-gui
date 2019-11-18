@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 
-import { CommandComponent, ConfigInterface, CodeInterface } from "./Abstract"
+import { ConfigInterface, CodeInterface } from "./Abstract"
 
 export interface CheckBoxComponentConfig {
   getValue: (component: CheckBoxComponent) => boolean
@@ -14,7 +14,7 @@ export interface CheckBoxComponentConfig {
   label: string
 }
 
-export class CheckBoxComponent extends CommandComponent<{}> implements ConfigInterface, CodeInterface {
+export class CheckBoxComponent implements ConfigInterface, CodeInterface {
 
   readonly hasConfig = true
   readonly hasCode = true
@@ -25,8 +25,7 @@ export class CheckBoxComponent extends CommandComponent<{}> implements ConfigInt
   private icon: JSX.Element
   private label: string
 
-  constructor(config: CheckBoxComponentConfig, props: Readonly<{}> = {}) {
-    super(props)
+  constructor(config: CheckBoxComponentConfig) {
     this.valueCallback = config.getValue
     this.changeCallback = config.onChange
     this.displayCodeCallback = config.displayCode || (() => true)
@@ -41,14 +40,6 @@ export class CheckBoxComponent extends CommandComponent<{}> implements ConfigInt
 
   getValue() {
     return this.valueCallback(this)
-  }
-
-  getLabel() {
-    return this.label
-  }
-
-  getIcon() {
-    return this.icon
   }
 
   displayCode() {

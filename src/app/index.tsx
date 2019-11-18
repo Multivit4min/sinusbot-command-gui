@@ -46,17 +46,17 @@ class CommandBuilder extends Component<AppProps & Styles> {
           <Typography>Sinusbot Command Builder</Typography>
 
           <div className={classes.margin}>
-            {fields.map(config => config.hasConfig ? config.renderConfigField() : null)}
+            {fields.map((config, i) => config.hasConfig ? config.renderConfigField(i) : null)}
           </div>
 
         </Grid>
-        <Grid item xs={4} justify="center">
+        <Grid item xs={4}>
           <Typography variant="h5">CODE:</Typography>
           <pre className="code">
             {fields.map(field => field.hasCode && field.displayCode() ? field.renderCode() : "").join("")}
           </pre>
         </Grid>
-        <Grid item xs={4} justify="center">
+        <Grid item xs={4}>
           <Typography variant="h5">HELP Command:</Typography>
           <pre className="code">
   {`
