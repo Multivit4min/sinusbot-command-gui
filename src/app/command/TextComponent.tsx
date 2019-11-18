@@ -4,34 +4,32 @@ import TextField from "@material-ui/core/TextField"
 
 import { CommandComponent, ConfigInterface, CodeInterface } from "./Abstract"
 
-export interface TextComponentConfig<T> {
-  hasCode?: boolean
-  getValue: (component: TextComponent<T>) => T
-  onChange: (component: TextComponent<T>, event: React.ChangeEvent<any>) => void
-  isValid?: (component: TextComponent<T>) => boolean
-  displayCode?: (component: TextComponent<T>) => boolean
-  renderCode: (component: TextComponent<T>) => string
+export interface TextComponentConfig {
+  getValue: (component: TextComponent) => string
+  onChange: (component: TextComponent, event: React.ChangeEvent<any>) => void
+  isValid?: (component: TextComponent) => boolean
+  displayCode?: (component: TextComponent) => boolean
+  renderCode: (component: TextComponent) => string
   icon: JSX.Element
   label: string
   multiline?: boolean
 }
 
-export class TextComponent<T> extends CommandComponent<{}> implements ConfigInterface<T>, CodeInterface {
+export class TextComponent extends CommandComponent<{}> implements ConfigInterface, CodeInterface {
 
-  readonly hasConfig: boolean = true
-  readonly hasCode: boolean
-  private valueCallback: (component: TextComponent<T>) => T
-  private changeCallback: (component: TextComponent<T>, event: React.ChangeEvent<any>) => void
-  private isValidCallback: (component: TextComponent<T>) => boolean
-  private displayCodeCallback: (component: TextComponent<T>) => boolean
-  private renderCodeCallback: (component: TextComponent<T>) => string
+  readonly hasConfig = true
+  readonly hasCode = true
+  private valueCallback: (component: TextComponent) => string
+  private changeCallback: (component: TextComponent, event: React.ChangeEvent<any>) => void
+  private isValidCallback: (component: TextComponent) => boolean
+  private displayCodeCallback: (component: TextComponent) => boolean
+  private renderCodeCallback: (component: TextComponent) => string
   private icon: JSX.Element
   private label: string
   private multiline: boolean
 
-  constructor(config: TextComponentConfig<T>, props: Readonly<{}> = {}) {
+  constructor(config: TextComponentConfig, props: Readonly<{}> = {}) {
     super(props)
-    this.hasCode = config.hasCode || false
     this.valueCallback = config.getValue
     this.changeCallback = config.onChange
     this.isValidCallback = config.isValid || (() => true)
@@ -46,7 +44,7 @@ export class TextComponent<T> extends CommandComponent<{}> implements ConfigInte
     return this.changeCallback(this, event)
   }
 
-  getValue(): T {
+  getValue() {
     return this.valueCallback(this)
   }
 

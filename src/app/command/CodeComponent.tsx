@@ -7,8 +7,8 @@ export interface CodeComponentConfig {
 
 export class CodeComponent extends CommandComponent<{}> implements CodeInterface {
 
-  readonly hasConfig: boolean = false
-  readonly hasCode: boolean = true
+  readonly hasConfig = false
+  readonly hasCode = true
   private displayCodeCallback: (component: CodeComponent) => boolean
   private renderCodeCallback: (component: CodeComponent) => string
 

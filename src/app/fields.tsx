@@ -1,20 +1,21 @@
 import React from "react"
 import { TextComponent } from "./command/TextComponent"
 import { CodeComponent } from "./command/CodeComponent"
+import { CheckBoxComponent } from "./command/CheckBoxComponent"
 
 import FeedbackIcon from "@material-ui/icons/Feedback"
 import HelpIcon from "@material-ui/icons/Help"
 import AssignmentIcon from "@material-ui/icons/Assignment"
+import LockIcon from "@material-ui/icons/Lock"
 
-import { setName, setHelp, setManual } from "./redux/command/actions"
+import { setName, setHelp, setManual, checkPermission } from "./redux/command/actions"
 import { store } from "./redux"
 
-type CommandComponent = TextComponent<any> | CodeComponent
+type CommandComponent = TextComponent | CodeComponent | CheckBoxComponent
 
 
 export const fields: CommandComponent[] = [
-  new TextComponent<string>({
-    hasCode: true,
+  new TextComponent({
     getValue: () => store.getState().command.name,
     onChange: (field, event) => store.dispatch(setName(event.target.value)),
     renderCode: (field) => `commander.createCommand(${field.getValue()})\n`,
@@ -22,8 +23,7 @@ export const fields: CommandComponent[] = [
     label: "Command Name",
     isValid: field => !(/\s/).test(field.getValue()),
   }),
-  new TextComponent<string>({
-    hasCode: true,
+  new TextComponent({
     getValue: () => store.getState().command.help,
     onChange: (field, event) => store.dispatch(setHelp(event.target.value)),
     renderCode: (field) => `  .setHelp("${field.getValue()}"))\n`,
@@ -31,8 +31,7 @@ export const fields: CommandComponent[] = [
     label: "Help Text",
     isValid: field => field.getValue().length > 0,
   }),
-  new TextComponent<string>({
-    hasCode: true,
+  new TextComponent({
     getValue: () => store.getState().command.manual,
     onChange: (field, event) => store.dispatch(setManual(event.target.value)),
     multiline: true,
@@ -41,9 +40,25 @@ export const fields: CommandComponent[] = [
     icon: <AssignmentIcon />,
     label: "Manual Text"
   }),
+  new CheckBoxComponent({
+    icon: <LockIcon />,
+    label: "check permissions",
+    displayCode: field => field.getValue(),
+    getValue: () => store.getState().command.checkPerm,
+    onChange: (field, event) => store.dispatch(checkPermission(event.target.checked)),
+    renderCode: field => `  .checkPermissions(client => {
+    //retrieves as first argument the requesting sinusbot client
+    //return either true or false in order to allow the client to use this command
+  })\n`
+  }),
   new CodeComponent({
     renderCode: () => `  .exec((client, args, reply) => {
     //your logic here
+    //arguments:
+    //  client   -> the client which issued this command
+    //  args     -> all parsed arguments
+    //  reply    -> a function which takes a string as parameter
+    //              it responds to the source where the client has sent a command
   })`
   })
 ]

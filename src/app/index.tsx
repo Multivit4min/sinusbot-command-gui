@@ -43,26 +43,17 @@ class CommandBuilder extends Component<AppProps & Styles> {
     return (
       <Grid container className={classes.content}>
         <Grid item xs={4}>
-          <Typography>Simple Sinusbot Command Builder!</Typography>
+          <Typography>Sinusbot Command Builder</Typography>
 
           <div className={classes.margin}>
-            {fields
-              .filter(field => field.hasConfig)
-              //@ts-ignore
-              .map(config => config.renderConfigField())
-            }
+            {fields.map(config => config.hasConfig ? config.renderConfigField() : null)}
           </div>
 
         </Grid>
         <Grid item xs={4} justify="center">
           <Typography variant="h5">CODE:</Typography>
           <pre className="code">
-              {fields
-                .filter(field => field.hasCode)
-                .filter(field => field.displayCode())
-                .map(field => field.renderCode())
-                .join("")
-              }
+            {fields.map(field => field.hasCode && field.displayCode() ? field.renderCode() : "").join("")}
           </pre>
         </Grid>
         <Grid item xs={4} justify="center">

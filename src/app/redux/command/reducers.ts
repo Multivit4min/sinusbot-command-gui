@@ -3,7 +3,8 @@ import { COMMAND, CommandActionTypes, CommandState } from "./types"
 const COMMAND_INITIAL: CommandState = {
   name: "ping",
   help: "responds with pong!",
-  manual: "manual text"
+  manual: "manual text",
+  checkPerm: false
 }
 
 export function reducer(
@@ -31,6 +32,12 @@ export function reducer(
       return {
         ...state,
         manual: action.manual
+      }
+
+    case COMMAND.CHECKPERMISSION:
+      return {
+        ...state,
+        checkPerm: action.check
       }
 
     default:

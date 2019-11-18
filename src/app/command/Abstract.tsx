@@ -8,15 +8,14 @@ export abstract class CommandComponent<T> extends Component<T> {
 
 }
 
-export interface ConfigInterface<T> {
-  getIcon(): any
-  getLabel(): string
-  getValue(): T
-  isValid(): boolean
+export interface ConfigInterface {
+  readonly hasConfig: true
+  getValue(): any
   renderConfigField(): JSX.Element
 }
 
 export interface CodeInterface {
+  readonly hasCode: true
   renderCode(): string
   displayCode(): boolean
 }

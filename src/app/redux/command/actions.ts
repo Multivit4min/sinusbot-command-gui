@@ -20,6 +20,13 @@ export function setHelp(help: string): CommandActionTypes {
   }
 }
 
+export function checkPermission(check: boolean): CommandActionTypes {
+  return {
+    type: COMMAND.CHECKPERMISSION,
+    check
+  }
+}
+
 export function setManual(manual: string): CommandActionTypes {
   return {
     type: COMMAND.SETMANUAL,
