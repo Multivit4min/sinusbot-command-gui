@@ -2,6 +2,7 @@
   "name": "sinusbot-commander-gui",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "https://multivit4min.github.io/sinusbot-command-gui/",
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
