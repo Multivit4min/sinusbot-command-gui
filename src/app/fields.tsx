@@ -12,12 +12,18 @@ import ReorderIcon from "@material-ui/icons/Reorder"
 
 import { setName, setHelp, setManual, checkPermission } from "./redux/command/actions"
 import { store } from "./redux"
+import { StringArgument } from "./components/ArgumentComponent/StringArgument"
+import { Argument } from "./components/ArgumentComponent/Argument"
+
+interface ArgumentCreator {
+  create(): Argument<any>
+}
 
 type CommandComponent =
-  TextComponent |
-  CodeComponent |
-  CheckBoxComponent |
-  DynamicListComponent
+  TextComponent               |
+  CodeComponent               |
+  CheckBoxComponent           |
+  DynamicListComponent<any>
 
 
 export const fields: CommandComponent[] = [
@@ -57,13 +63,16 @@ export const fields: CommandComponent[] = [
     //return either true or false in order to allow the client to use this command
   })\n`
   }),
-  new DynamicListComponent({
+  new DynamicListComponent<ArgumentCreator>({
     icon: <ReorderIcon />,
     label: "Add Argument",
     listItems: {
-      "StringArgument": null,
-      "NumberArgument": null,
-      "ClientArgument": null
+      "StringArgument": StringArgument
+    },
+    onSelect: arg => {
+      /** @todo */
+      const argument = arg.create()
+      console.log({ argument })
     }
   }),
   new CodeComponent({

@@ -32,7 +32,7 @@ interface IProps {
   icon: JSX.Element
   label: string
   listItems: string[]
-  select: (item: string) => void
+  onSelect: (item: string) => void
 }
 
 class ListSelect extends Component<IProps, IState> {
@@ -51,8 +51,8 @@ class ListSelect extends Component<IProps, IState> {
 
   handleClose = (submit: boolean = false) => () => {
     const { selected } = this.state
-    const { select, listItems } = this.props
-    if (submit && listItems.includes(selected)) select(selected)
+    const { onSelect, listItems } = this.props
+    if (submit && listItems.includes(selected)) onSelect(selected)
     this.setState({ open: false, selected: "" })
   }
 

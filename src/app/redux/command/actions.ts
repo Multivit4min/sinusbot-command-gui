@@ -42,8 +42,8 @@ export function deleteArgument(id: number): CommandActionTypes {
   }
 }
 
-export function updateArgument(argument: Partial<Arguments>): CommandActionTypes {
+export function updateArgument(id: number, argument: Partial<Arguments>): CommandActionTypes {
   return {
-    type: COMMAND.UPDATEARGUMENT, argument
+    type: COMMAND.UPDATEARGUMENT, id, argument
   }
 }

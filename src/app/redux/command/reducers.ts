@@ -46,7 +46,7 @@ export function reducer(
       return {
         ...state,
         argId: state.argId + 1,
-        argument: [...state.argument, { ...action.argument, id: state.argId }]
+        argument: [...state.argument, { ...action.argument }]
       }
 
     case COMMAND.DELETEARGUMENT:

@@ -41,6 +41,7 @@ export interface DeleteArgumentAction {
 
 export interface UpdateArgumentAction {
   type: typeof COMMAND.UPDATEARGUMENT
+  id: number
   argument: Partial<Arguments>
 }
 
@@ -60,9 +61,9 @@ export type CommandActionTypes =
 
 /** Arguments */
 export type Arguments = 
-  StringArgument           |
-  NumberArgument           |
-  ClientArgument           |
+  StringArgument             |
+  NumberArgument             |
+  ClientArgument             |
   RestArgument
 
 export enum ArgumentType {
