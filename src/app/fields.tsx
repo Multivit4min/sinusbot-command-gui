@@ -20,10 +20,10 @@ interface ArgumentCreator {
 }
 
 type CommandComponent =
-  TextComponent               |
-  CodeComponent               |
-  CheckBoxComponent           |
-  DynamicListComponent<any>
+  TextComponent                   |
+  CodeComponent                   |
+  CheckBoxComponent               |
+  DynamicListComponent<any, any>
 
 
 export const fields: CommandComponent[] = [
@@ -63,16 +63,14 @@ export const fields: CommandComponent[] = [
     //return either true or false in order to allow the client to use this command
   })\n`
   }),
-  new DynamicListComponent<ArgumentCreator>({
+  new DynamicListComponent<ArgumentCreator, Argument<any>>({
     icon: <ReorderIcon />,
     label: "Add Argument",
     listItems: {
       "StringArgument": StringArgument
     },
-    onSelect: arg => {
-      /** @todo */
-      const argument = arg.create()
-      console.log({ argument })
+    onSelect: (list, arg) => {
+      list.addElement(arg.create())
     }
   }),
   new CodeComponent({

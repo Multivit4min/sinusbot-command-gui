@@ -13,3 +13,9 @@ export interface CodeInterface extends CommandComponent {
   renderCode(): string
   displayCode(): boolean
 }
+
+
+export type CommandType = 
+  CommandComponent &
+  ConfigInterface  &
+  CodeInterface

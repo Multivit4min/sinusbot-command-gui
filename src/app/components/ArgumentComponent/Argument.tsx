@@ -1,10 +1,20 @@
+import React from "react"
 import { updateArgument } from "../../redux/command/actions"
 import { store } from "../../redux"
 import { Arguments, ArgumentType } from "../../redux/command/types"
+import { CommandType } from "../Abstract"
+import { Typography } from "@material-ui/core"
 
-export abstract class Argument<T extends Arguments> {
+export abstract class Argument<T extends Arguments> implements CommandType {
   readonly id: number
   readonly type: ArgumentType
+
+  readonly hasCode = true
+  readonly hasConfig = true
+
+  abstract renderConfigField(key?: number): JSX.Element
+  abstract renderCode(): string
+  abstract displayCode(): boolean
 
   constructor(id: number, type: ArgumentType) {
     this.id = id
@@ -32,6 +42,10 @@ export abstract class Argument<T extends Arguments> {
     )) as T|undefined
     if (!arg) throw new Error(`argument with id ${this.id} not found`)
     return arg
+  }
+
+  renderBasicConfig() {
+    return (<Typography>Todo Abstract Config</Typography>)
   }
 
   getType() {
@@ -76,6 +90,15 @@ export abstract class Argument<T extends Arguments> {
 
   getDefault() {
     return this.getArgument().default
+  }
+
+  renderBasicCode() {
+    const initial = Argument.initial(0)
+    let code = ""
+    if (this.getName() !== initial.name) {
+      code += `.setName("${this.getName()}"${this.getDisplay() !== initial.display ? `, "${this.getDisplay()}"` : ""})`
+    }
+    return code
   }
 
 }
