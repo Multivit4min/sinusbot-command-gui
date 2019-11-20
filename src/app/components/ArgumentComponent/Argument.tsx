@@ -141,12 +141,10 @@ export abstract class Argument<T extends Arguments> implements CommandType {
   renderBasicCode() {
     const initial = Argument.initial(0)
     let code = ""
-    if (this.getName() !== initial.name) {
+    if (this.getName() !== initial.name)
       code += `.setName("${this.getName()}"${this.getDisplay() !== initial.display ? `, "${this.getDisplay()}"` : ""})`
-    }
-    if (this.getOptional() !== initial.optional) {
+    if (this.getOptional() !== initial.optional)
       code += `.isOptional()`
-    }
     return code
   }
 

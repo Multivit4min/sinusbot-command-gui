@@ -4,13 +4,20 @@ import { ConfigInterface, CodeInterface } from "../Abstract"
 import { ArgumentType, StringArgument as StringArg } from "../../redux/command/types"
 import { store } from "../../redux"
 import { addArgument } from "../../redux/command/actions"
+import { DynamicListComponent } from "../DynamicListComponent"
+
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import Typography from "@material-ui/core/Typography"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions"
 import Button from "@material-ui/core/Button"
-import { DynamicListComponent } from "../DynamicListComponent"
+import Grid from "@material-ui/core/Grid"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
 
 export class StringArgument extends Argument<StringArg> implements ConfigInterface, CodeInterface {
 
@@ -75,7 +82,7 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
   }
   
   getLowerCase() {
-    return this.getArgument().uppercase
+    return this.getArgument().lowercase
   }
 
   updateLowerCase(lowercase: boolean) {
@@ -89,7 +96,10 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
   }
 
   renderCode() {
-    return `  .addArgument(arg => arg.string${this.renderBasicCode()})`
+    let code = `  .addArgument(arg => arg.string${this.renderBasicCode()}`
+    if (this.getUpperCase()) code += ".toUpperCase()"
+    if (this.getLowerCase()) code += ".toLowerCase()"
+    return `${code})`
   }
 
   renderConfigField() {
@@ -101,10 +111,46 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div>
-            <Button size="small" color="secondary" onClick={() => this.removeArgument()} >Delete</Button>
             {this.renderBasicConfig()}
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item>
+                <ArrowUpwardIcon />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.getUpperCase()}
+                      onChange={event => this.updateUpperCase(event.target.checked)}
+                      color="primary"
+                    />
+                  }
+                  label="To Uppercase"
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item>
+                <ArrowDownwardIcon />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.getLowerCase()}
+                      onChange={event => this.updateLowerCase(event.target.checked)}
+                      color="primary"
+                    />
+                  }
+                  label="To Lowercase"
+                />
+              </Grid>
+            </Grid>
           </div>
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+          <Button size="small" color="secondary" onClick={() => this.removeArgument()} >Delete</Button>
+        </ExpansionPanelActions>
       </ExpansionPanel>
       </>
     )
