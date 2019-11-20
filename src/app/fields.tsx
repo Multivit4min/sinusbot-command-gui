@@ -16,7 +16,7 @@ import { StringArgument } from "./components/ArgumentComponent/StringArgument"
 import { Argument } from "./components/ArgumentComponent/Argument"
 
 interface ArgumentCreator {
-  create(): Argument<any>
+  create(parent: DynamicListComponent<any, any>): Argument<any>
 }
 
 type CommandComponent =
@@ -38,7 +38,7 @@ export const fields: CommandComponent[] = [
   new TextComponent({
     getValue: () => store.getState().command.help,
     onChange: (field, event) => store.dispatch(setHelp(event.target.value)),
-    renderCode: (field) => `  .setHelp("${field.getValue()}"))\n`,
+    renderCode: (field) => `  .setHelp("${field.getValue()}")\n`,
     icon: <HelpIcon />,
     label: "Help Text",
     isValid: field => field.getValue().length > 0,
@@ -70,7 +70,7 @@ export const fields: CommandComponent[] = [
       "StringArgument": StringArgument
     },
     onSelect: (list, arg) => {
-      list.addElement(arg.create())
+      list.addElement(arg.create(list))
     }
   }),
   new CodeComponent({

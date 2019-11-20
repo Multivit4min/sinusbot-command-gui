@@ -33,6 +33,11 @@ export class DynamicListComponent<T, Y extends CommandType> implements CommandTy
   addElement(element: Y) {
     this.elements.push(element)
   }
+  
+  removeElement(element: Y) {
+    this.elements = this.elements.filter(el => el !== element)
+    return this
+  }
 
   renderConfigField() {
     return (

@@ -1,7 +1,9 @@
 import React, { Component } from "react"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import IconButton from "@material-ui/core/IconButton"
 import { createStyles, withStyles, Theme } from "@material-ui/core"
+import FileCopyIcon from "@material-ui/icons/FileCopy"
 import { AppState } from "./redux"
 import { connect } from "react-redux"
 
@@ -36,13 +38,28 @@ interface Styles {
 
 class CommandBuilder extends Component<AppProps & Styles> {
 
+  copyCode = () => {
+    const el = document.createElement("textarea")
+    el.value = this.renderCode()
+    el.setAttribute("readonly", "")
+    el.style.position = "absolute"
+    el.style.left = "-9999px"
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand("copy")
+    document.body.removeChild(el)
+  }
+
+  renderCode = () => {
+    return fields.map(field => field.hasCode && field.displayCode() ? field.renderCode() : "").join("")
+  }
 
   render() {
     const { classes, command } = this.props
 
     return (
       <Grid container className={classes.content}>
-        <Grid item xs={4}>
+        <Grid item sm={12} md={6} lg={3}>
           <Typography>Sinusbot Command Builder</Typography>
 
           <div className={classes.margin}>
@@ -50,13 +67,14 @@ class CommandBuilder extends Component<AppProps & Styles> {
           </div>
 
         </Grid>
-        <Grid item xs={4}>
-          <Typography variant="h5">CODE:</Typography>
+        <Grid item sm={12} md={6} lg={5}>
+          <Typography variant="h5"><IconButton onClick={this.copyCode}><FileCopyIcon /></IconButton> CODE:</Typography>
+          
           <pre className="code">
-            {fields.map(field => field.hasCode && field.displayCode() ? field.renderCode() : "").join("")}
+            {this.renderCode()}
           </pre>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item sm={12} md={6} lg={4}>
           <Typography variant="h5">HELP Command:</Typography>
           <pre className="code">
   {`

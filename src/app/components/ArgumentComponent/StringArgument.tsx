@@ -1,21 +1,27 @@
 import React from "react"
 import { Argument } from "./Argument"
 import { ConfigInterface, CodeInterface } from "../Abstract"
-import { Typography } from "@material-ui/core"
 import { ArgumentType, StringArgument as StringArg } from "../../redux/command/types"
 import { store } from "../../redux"
 import { addArgument } from "../../redux/command/actions"
+import Typography from "@material-ui/core/Typography"
+import ExpansionPanel from "@material-ui/core/ExpansionPanel"
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import Button from "@material-ui/core/Button"
+import { DynamicListComponent } from "../DynamicListComponent"
 
 export class StringArgument extends Argument<StringArg> implements ConfigInterface, CodeInterface {
 
   readonly hasConfig = true
   readonly hasCode = true
 
-  constructor(id: number) {
-    super(id, ArgumentType.STRING)
+  constructor(id: number, parent: DynamicListComponent<any, any>) {
+    super(id, ArgumentType.STRING, parent)
   }
 
-  static create() {
+  static create(parent: DynamicListComponent<any, any>) {
     const id = store.getState().command.argId
     store.dispatch(addArgument({
       type: ArgumentType.STRING,
@@ -23,7 +29,7 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
       lowercase: false,
       ...Argument.initial(id)
     }))
-    return new StringArgument(id)
+    return new StringArgument(id, parent)
   }
   
   getRegex() {
@@ -83,12 +89,24 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
   }
 
   renderCode() {
-    return `  .addArgument(arg => arg.string)`
+    return `  .addArgument(arg => arg.string${this.renderBasicCode()})`
   }
 
   renderConfigField() {
     return (
-      <Typography>TODO StringArgument</Typography>
+      <>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>String Argument (TODO)</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <div>
+            <Button size="small" color="secondary" onClick={() => this.removeArgument()} >Delete</Button>
+            {this.renderBasicConfig()}
+          </div>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      </>
     )
   }
 }

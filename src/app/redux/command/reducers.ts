@@ -60,7 +60,7 @@ export function reducer(
         ...state,
         //@ts-ignore
         argument: state.argument.map(arg => {
-          if (arg.id !== action.argument.id) return arg
+          if (arg.id !== action.id) return arg
           return { ...arg, ...action.argument }
         })
       }                                
