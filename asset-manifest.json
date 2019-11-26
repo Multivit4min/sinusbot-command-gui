@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.js": "/sinusbot-command-gui/static/js/main.bab09047.chunk.js",
+    "main.js.map": "/sinusbot-command-gui/static/js/main.bab09047.chunk.js.map",
+    "runtime-main.js": "/sinusbot-command-gui/static/js/runtime-main.c227cab3.js",
+    "runtime-main.js.map": "/sinusbot-command-gui/static/js/runtime-main.c227cab3.js.map",
+    "static/js/2.19551358.chunk.js": "/sinusbot-command-gui/static/js/2.19551358.chunk.js",
+    "static/js/2.19551358.chunk.js.map": "/sinusbot-command-gui/static/js/2.19551358.chunk.js.map",
+    "index.html": "/sinusbot-command-gui/index.html",
+    "precache-manifest.29839e293f36580b810cfa34202b7383.js": "/sinusbot-command-gui/precache-manifest.29839e293f36580b810cfa34202b7383.js",
+    "service-worker.js": "/sinusbot-command-gui/service-worker.js"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c227cab3.js",
+    "static/js/2.19551358.chunk.js",
+    "static/js/main.bab09047.chunk.js"
+  ]
+}
