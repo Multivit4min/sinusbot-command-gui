@@ -9,6 +9,8 @@ import { connect } from "react-redux"
 
 import { fields } from "./fields"
 import { CommandState } from "./redux/command/types"
+import ManPreview from "./preview/man"
+import HelpPreview from "./preview/help"
 
 const styles = ({ spacing }: Theme) => createStyles({
   content: {
@@ -75,27 +77,8 @@ class CommandBuilder extends Component<AppProps & Styles> {
           </pre>
         </Grid>
         <Grid item sm={12} md={6} lg={4}>
-          <Typography variant="h5">HELP Command:</Typography>
-          <pre className="code">
-  {`
-    <22:01:09> "TeamSpeakClient": !help
-    <22:01:09> "Sinusbot": 3 Commands found:
-    <22:01:09> "Sinusbot": 
-    !help Displays this text
-    !man Displays detailed help about a command if available
->>> !${command.name} ${command.help}
-`}
-        </pre>
-          <Typography variant="h5">MAN Command:</Typography>
-          <pre className="code">
-  {`
-<14:52:43> "TeamSpeakClient": !man ${command.name}
-<14:52:43> "Sinusbot": 
-Manual for command: !${command.name}
-Usage: !${command.name}
-${command.manual||command.help}
-`}
-        </pre>
+          <HelpPreview command={command} />
+          <ManPreview command={command} />
         </Grid>
       </Grid>
     )

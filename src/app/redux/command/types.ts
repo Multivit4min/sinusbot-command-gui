@@ -6,7 +6,8 @@ export enum COMMAND {
   ADDARGUMENT = "COMMAND/ADDARGUMENT",
   DELETEARGUMENT = "COMMAND/DELETEARGUMENT",
   UPDATEARGUMENT = "COMMAND/UPDATEARGUMENT",
-  SETMANUAL = "COMMAND/SETMANUAL"
+  SETMANUAL = "COMMAND/SETMANUAL",
+  UPDATEPREFIX = "COMMAND/UPDATEPREFIX"
 }
 
 export interface SetNameAction {
@@ -45,6 +46,11 @@ export interface UpdateArgumentAction {
   argument: Partial<Arguments>
 }
 
+export interface UpdatePrefixAction {
+  type: typeof COMMAND.UPDATEPREFIX
+  prefix: string
+}
+
 export interface ResetAction {
   type: typeof COMMAND.RESET
 }
@@ -57,6 +63,7 @@ export type CommandActionTypes =
   AddArgumentAction          |
   DeleteArgumentAction       |
   UpdateArgumentAction       |
+  UpdatePrefixAction         |
   ResetAction
 
 /** Arguments */
@@ -117,5 +124,6 @@ export interface CommandState {
   help: string
   manual: string
   checkPerm: boolean
-  argument: Arguments[]
+  argument: Arguments[],
+  prefix: string
 }

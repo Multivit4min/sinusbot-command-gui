@@ -6,7 +6,8 @@ const COMMAND_INITIAL: CommandState = {
   help: "responds with pong!",
   manual: "manual text",
   checkPerm: false,
-  argument: []
+  argument: [],
+  prefix: "!"
 }
 
 export function reducer(
@@ -63,7 +64,13 @@ export function reducer(
           if (arg.id !== action.id) return arg
           return { ...arg, ...action.argument }
         })
-      }                                
+      } 
+
+    case COMMAND.UPDATEPREFIX:
+      return {
+        ...state,
+        prefix: action.prefix === "" ? COMMAND_INITIAL.prefix : action.prefix
+      }                               
 
     default:
       return state

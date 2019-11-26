@@ -1,13 +1,14 @@
 import React from "react"
 import { Argument } from "./Argument"
 import { ConfigInterface, CodeInterface } from "../Abstract"
-import { ArgumentType, StringArgument as StringArg } from "../../redux/command/types"
+import { ArgumentType, NumberArgument as NumberArg } from "../../redux/command/types"
 import { store } from "../../redux"
 import { addArgument } from "../../redux/command/actions"
 import { DynamicListComponent } from "../DynamicListComponent"
 
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
+import ThumpDownIcon from "@material-ui/icons/ThumbDown"
+import ThumpUpIcon from "@material-ui/icons/ThumbUp"
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import Typography from "@material-ui/core/Typography"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
@@ -19,75 +20,52 @@ import Grid from "@material-ui/core/Grid"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 
-export class StringArgument extends Argument<StringArg> implements ConfigInterface, CodeInterface {
+export class NumberArgument extends Argument<NumberArg> implements ConfigInterface, CodeInterface {
 
   readonly hasConfig = true
   readonly hasCode = true
 
   constructor(id: number, parent: DynamicListComponent<any, any>) {
-    super(id, ArgumentType.STRING, parent)
+    super(id, ArgumentType.NUMBER, parent)
   }
 
   static create(parent: DynamicListComponent<any, any>) {
     const id = store.getState().command.argId
     store.dispatch(addArgument({
-      type: ArgumentType.STRING,
-      uppercase: false,
-      lowercase: false,
+      type: ArgumentType.NUMBER,
+      int: false,
+      forcePositive: false,
+      forceNegative: false,
       ...Argument.initial(id)
     }))
-    return new StringArgument(id, parent)
+    return new NumberArgument(id, parent)
   }
   
-  getRegex() {
-    return this.getArgument().regex
+  getInt() {
+    return this.getArgument().int
   }
 
-  updateRegex(regex: RegExp) {
-    return this.update({ regex })
+  updateInt(int: boolean) {
+    return this.update({ int })
   }
   
-  getMaxLen() {
-    return this.getArgument().maxlen
+  getForcePositive() {
+    return this.getArgument().forcePositive
   }
 
-  updateMaxLen(maxlen: number|undefined) {
-    return this.update({ maxlen })
-  }
-  
-  getMinLen() {
-    return this.getArgument().minlen
-  }
-
-  updateMinLen(minlen: number|undefined) {
-    return this.update({ minlen })
-  }
-  
-  getWhitelist() {
-    return this.getArgument().whitelist
-  }
-
-  updateWhitelist(whitelist: string[]|undefined) {
-    return this.update({ whitelist })
-  }
-  
-  getUpperCase() {
-    return this.getArgument().uppercase
-  }
-
-  updateUpperCase(uppercase: boolean) {
-    const args: Partial<StringArg> = { uppercase }
-    if (uppercase) args.lowercase = false
+  updateForcePositive(forcePositive: boolean) {
+    const args: Partial<NumberArg> = { forcePositive }
+    if (forcePositive) args.forceNegative = false
     return this.update(args)
   }
   
-  getLowerCase() {
-    return this.getArgument().lowercase
+  getForceNegative() {
+    return this.getArgument().forceNegative
   }
 
-  updateLowerCase(lowercase: boolean) {
-    const args: Partial<StringArg> = { lowercase }
-    if (lowercase) args.uppercase = false
+  updateForceNegative(forceNegative: boolean) {
+    const args: Partial<NumberArg> = { forceNegative }
+    if (forceNegative) args.forcePositive = false
     return this.update(args)
   }
 
@@ -96,9 +74,10 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
   }
 
   renderCode() {
-    let code = `  .addArgument(arg => arg.string${this.renderBasicCode()}`
-    if (this.getUpperCase()) code += ".toUpperCase()"
-    if (this.getLowerCase()) code += ".toLowerCase()"
+    let code = `  .addArgument(arg => arg.number${this.renderBasicCode()}`
+    if (this.getInt()) code += ".integer()"
+    if (this.getForcePositive()) code += ".forcePositive()"
+    if (this.getForceNegative()) code += ".forceNegative()"
     return `${code})`
   }
 
@@ -107,42 +86,59 @@ export class StringArgument extends Argument<StringArg> implements ConfigInterfa
       <>
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>String Argument</Typography>
+          <Typography>Number Argument</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <div>
             {this.renderBasicConfig()}
             <Grid container spacing={1} alignItems="flex-end">
               <Grid item>
-                <ArrowUpwardIcon />
+                <FlagOutlinedIcon />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={this.getUpperCase()}
-                      onChange={event => this.updateUpperCase(event.target.checked)}
+                      checked={this.getInt()}
+                      onChange={event => this.updateInt(event.target.checked)}
                       color="primary"
                     />
                   }
-                  label="To Uppercase"
+                  label="want an integer number (whole number)"
                 />
               </Grid>
             </Grid>
             <Grid container spacing={1} alignItems="flex-end">
               <Grid item>
-                <ArrowDownwardIcon />
+                <ThumpUpIcon />
               </Grid>
               <Grid item>
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={this.getLowerCase()}
-                      onChange={event => this.updateLowerCase(event.target.checked)}
+                      checked={this.getForcePositive()}
+                      onChange={event => this.updateForcePositive(event.target.checked)}
                       color="primary"
                     />
                   }
-                  label="To Lowercase"
+                  label="expect positive number"
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item>
+                <ThumpDownIcon />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.getForceNegative()}
+                      onChange={event => this.updateForceNegative(event.target.checked)}
+                      color="primary"
+                    />
+                  }
+                  label="expect negative number"
                 />
               </Grid>
             </Grid>

@@ -11,9 +11,11 @@ import LockIcon from "@material-ui/icons/Lock"
 import ReorderIcon from "@material-ui/icons/Reorder"
 
 import { setName, setHelp, setManual, checkPermission } from "./redux/command/actions"
+import { ArgumentType } from "./redux/command/types"
 import { store } from "./redux"
 import { StringArgument } from "./components/ArgumentComponent/StringArgument"
 import { Argument } from "./components/ArgumentComponent/Argument"
+import { NumberArgument } from "./components/ArgumentComponent/NumberArgument"
 
 interface ArgumentCreator {
   create(parent: DynamicListComponent<any, any>): Argument<any>
@@ -67,7 +69,8 @@ export const fields: CommandComponent[] = [
     icon: <ReorderIcon />,
     label: "Add Argument",
     listItems: {
-      "StringArgument": StringArgument
+      "StringArgument": StringArgument,
+      "NumberArgument": NumberArgument
     },
     onSelect: (list, arg) => {
       list.addElement(arg.create(list))
@@ -81,6 +84,11 @@ export const fields: CommandComponent[] = [
     //  args     -> all parsed arguments
     //  reply    -> a function which takes a string as parameter
     //              it responds to the source where the client has sent a command
-  })`
+${
+      store.getState().command.argument.length > 0 ?
+      `${store.getState().command.argument.map(arg => {
+        return `    arg.${arg.name} //is a ${ArgumentType[arg.type]}`
+      }).join("\n")}\n  )` : "  )"
+    }`
   })
 ]

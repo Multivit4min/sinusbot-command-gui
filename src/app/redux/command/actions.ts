@@ -47,3 +47,9 @@ export function updateArgument(id: number, argument: Partial<Arguments>): Comman
     type: COMMAND.UPDATEARGUMENT, id, argument
   }
 }
+
+export function setPrefix(prefix: string): CommandActionTypes {
+  return {
+    type: COMMAND.UPDATEPREFIX, prefix
+  }
+}
